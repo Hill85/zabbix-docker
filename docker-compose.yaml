@@ -1,0 +1,88 @@
+version: "3.7"
+
+services:
+     mysql:  
+      image: mysql
+      restart: always
+      container_name: mysql-server
+      ports: 
+        - "3306:3306"
+      volumes: 
+        - ./mysql/data:/var/lib/data
+      environment: 
+        MYSQL_DATABASE: zabbix
+        MYSQL_ROOT_PASSWORD: YjA0OTYwZDBiN2EwNWFjMTRjZGU3Yjcy
+      command:
+        - --default-authentication-plugin=mysql_native_password
+        - --character-set-server=utf8mb4 
+        - --collation-server=utf8mb4_bin
+      networks: 
+        - network-zabbix
+    
+     zabbix-java:
+      image: zabbix/zabbix-java-gateway
+      restart: always
+      container_name: zabbix-java-gateway
+      networks: 
+        - network-zabbix 
+     zabbix-server:
+      image: zabbix/zabbix-server-mysql:centos-5.0-latest 
+      container_name: zabbix-server-mysql
+      depends_on:
+        - zabbix-java 
+        - mysql
+      restart: always
+      ports: 
+        - "10051:10051"
+      volumes: 
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro 
+        - ./data-zabbix/alertscripts:/usr/lib/zabbix/alertscripts
+        - ./data-zabbix/externalscripts:/usr/lib/zabbix/externalscripts 
+      environment: 
+        DB_SERVER_HOST: mysql-server 
+        MYSQL_DATABASE: zabbix
+        MYSQL_ROOT_PASSWORD: YjA0OTYwZDBiN2EwNWFjMTRjZGU3Yjcy  
+      networks: 
+        - network-zabbix
+     zabbix-web:
+      image: zabbix/zabbix-web-nginx-mysql:centos-5.0-latest
+      container_name: zabbix-web-nginx-mysql
+      depends_on: 
+        - mysql
+        - zabbix-server
+        
+      restart: always
+      ports: 
+        - "8080:80"
+      volumes: 
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+        - ./zbx_env/etc/ssl/apache2:/etc/ssl/apache2:ro
+        - ./zbx_env/usr/share/zabbix/modules/:/usr/share/zabbix/modules/:ro
+      environment: 
+        DB_SERVER_HOST: mysql-server 
+        MYSQL_DATABASE: zabbix
+        MYSQL_ROOT_PASSWORD: YjA0OTYwZDBiN2EwNWFjMTRjZGU3Yjcy
+        ZBX_SERVER_HOST: zabbix-server-mysql
+      networks: 
+        - network-zabbix
+     zabbix-agent:
+      image: zabbix/zabbix-agent
+      container_name: zabbix-agent
+      depends_on: 
+        - mysql
+        - zabbix-server
+      restart: always
+      ports: 
+        - "10052:10052"
+      volumes: 
+        - /var/run:/var/run
+      environment: 
+        ZBX_HOSTNAME: Zabbix-server   
+        ZBX_SERVER_HOST: zabbix-server-mysql
+      networks: 
+        - network-zabbix   
+networks: 
+  network-zabbix:
+    driver: bridge

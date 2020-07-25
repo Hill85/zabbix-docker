@@ -1,0 +1,12 @@
+2020-06-24T14:49:09.186724Z 0 [Warning] [MY-011070] [Server] 'Disabling symbolic links using --skip-symbolic-links (or equivalent) is the default. Consider not using this option as it' is deprecated and will be removed in a future release.
+2020-06-24T14:49:09.186980Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.20) starting as process 90
+2020-06-24T14:49:09.193847Z 0 [Warning] [MY-013242] [Server] --character-set-server: 'utf8' is currently an alias for the character set UTF8MB3, but will be an alias for UTF8MB4 in a future release. Please consider using UTF8MB4 in order to be unambiguous.
+2020-06-24T14:49:09.193866Z 0 [Warning] [MY-013244] [Server] --collation-server: 'utf8_bin' is a collation of the deprecated character set UTF8MB3. Please consider using UTF8MB4 with an appropriate collation instead.
+2020-06-24T14:49:09.300920Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2020-06-24T14:49:12.137119Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2020-06-24T14:49:12.821716Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: '/var/run/mysqld/mysqlx.sock'
+2020-06-24T14:49:14.410895Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2020-06-24T14:49:14.573498Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+2020-06-24T14:49:14.647713Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.20'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server - GPL.
+2020-06-24T14:49:36.070130Z 14 [System] [MY-013172] [Server] Received SHUTDOWN from user root. Shutting down mysqld (Version: 8.0.20).
+2020-06-24T14:49:55.042469Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.20)  MySQL Community Server - GPL.
