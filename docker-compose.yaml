@@ -38,17 +38,13 @@ services:
       volumes: 
         - /etc/localtime:/etc/localtime:ro
         - /etc/timezone:/etc/timezone:ro 
-        - ./data-zabbix/alertscripts:/usr/lib/zabbix/alertscripts
-        - ./data-zabbix/externalscripts:/usr/lib/zabbix/externalscripts 
-      environment: 
-        DB_SERVER_HOST: mysql-server 
+        - ./data-zabbix/alertszabbix-serverserver 
         MYSQL_DATABASE: zabbix
         MYSQL_USER: zabbix
         MYSQL_PASSWORD: Zabbix123
         MYSQL_ROOT_PASSWORD: YjA0OTYwZDBiN2EwNWFjMTRjZGU3Yjcy  
       networks: 
-        - network-zabbix
-     zabbix-web:
+        - network-zabbixmysql
       image: zabbix/zabbix-web-nginx-mysql:centos-5.0-latest
       container_name: zabbix-web-nginx-mysql
       depends_on: 
@@ -88,6 +84,19 @@ services:
         ZBX_SERVER_HOST: zabbix-server-mysql
       networks: 
         - network-zabbix   
+     grafana:  
+      container_name: grafana
+      image: grafana/grafana
+      networks:
+        - network-zabbix
+      restart: always
+      ports:
+        - "3000:3000"
+      environment:
+        - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
+      depends_on:
+        - mysql
+        - zabbix-server
 networks: 
   network-zabbix:
     driver: bridge
